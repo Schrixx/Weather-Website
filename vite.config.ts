@@ -6,12 +6,11 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      pages: "/src/pages",
+      hooks: "/src/hooks",
       src: "/src",
       assets: "/src/assets",
-      data: "/src/data",
       components: "/src/components",
-      ui: "/src/components/ui",
+      types: "/src/types",
     },
   },
 })
