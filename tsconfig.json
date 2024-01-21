@@ -23,12 +23,11 @@
     /* Absolute paths */
     "baseUrl": "./",
     "paths": {
-      "src/*": ["./src/*"],
-      "assets/*": ["./src/assets/*"],
-      "data/*": ["./src/data"],
-      "components/*": ["./src/components"],
-      "ui/*": ["./src/components/ui"],
-      "lib/*": ["./src/lib/*"],
+      "@src/*": ["./src/*"],
+      "@assets/*": ["./src/assets/*"],
+      "@components/*": ["./src/components/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@types/*": ["./src/types/*"],
     }
   },
   "include": ["src"],
