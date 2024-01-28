@@ -7,16 +7,16 @@ const useForecast = () => {
   const [option, setOption] = useState<[]>([])
   const [city, setCity] = useState<optionType | null>(null)
   const [forecast, setForecast] = useState<forecastType | null>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [showOptions, setShowOptions] = useState<boolean>(true)
 
   useEffect(() => {
-    console.log("Option Effect Change: ")
-    console.log(option)
-  }, [option])
-
-  useEffect(() => {
-    console.log("Forecast: ")
-    console.log(forecast)
-  }, [forecast])
+    if (city) {
+      setTerm(city.name)
+      setOption([])
+      submitOption()
+    }
+  }, [city])
 
   const findLocations = (location: string) => {
     fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${location.trim()}&limit=5&appid=${import.meta.env.VITE_REACT_APP_API_KEY}`)
@@ -37,43 +37,61 @@ const useForecast = () => {
   }
 
   const getForecast = (city: optionType) => {
-    if (forecast) {
-      fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${city.lat}&lon=${city.lon}&units=metric&appid=${import.meta.env.VITE_REACT_APP_API_KEY}`)
-      .then(res => res.json())
-      .then(data => {
-        const forecastData = {
-          ...data.city,
-          list: data.list.slice(0, 16),
-        }
-        setForecast(forecastData)
-      })
-    }
+    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${city.lat}&lon=${city.lon}&units=metric&appid=${import.meta.env.VITE_REACT_APP_API_KEY}`)
+    .then(res => res.json())
+    .then(data => {
+      const forecastData = {
+        ...data.city,
+        list: data.list.slice(0, 16),
+      }
+      setForecast(forecastData)
+    })
   }
 
-  const onSubmit = () => {
-    if (!city) return
-
-    getForecast(city)
+  const userLocationError = () => {
+    alert("Failed to obtain location data. Please allow this website to access your location and try again.")
+    setIsLoading(false)
   }
 
-  function onOptionSelect(option: optionType) {
+  const userGeoLocation = () => {
+    setIsLoading(true)
+    console.log(`Started userGeoLocation: ${isLoading}`)
+    navigator.geolocation.getCurrentPosition( async ({ coords }) => {
+      let response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${coords.latitude}&lon=${coords.longitude}&units=metric&appid=${import.meta.env.VITE_REACT_APP_API_KEY}`)
+      let data = await response.json()
+      const forecastData = {
+        ...data.city,
+        list: data.list.slice(0, 16),
+      }
+      setForecast(forecastData)
+      setIsLoading(false)
+    }, userLocationError)
+  }
+
+  const optionClickHandler = (option: optionType) => {
     setCity(option)
   }
 
-  useEffect(() => {
-    if (city) {
-      setTerm(city.name)
-      setOption([])
+  const submitOption = () => {
+    setShowOptions(false)
+    if (!city) {
+      console.log("nothing in city returning")
+      return
     }
-  }, [city])
+    console.log("There IS something in city, getting forecast")
+    getForecast(city)
+  }
 
   return {
     option,
     term,
     forecast,
-    onSubmit,
+    setForecast,
+    showOptions,
     onInputChange,
-    onOptionSelect,
+    optionClickHandler,
+    userGeoLocation,
+    isLoading,
   }
 }
 

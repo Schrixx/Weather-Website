@@ -6,7 +6,9 @@ import { optionType } from "../types/index"
 
 import { HiMagnifyingGlass } from "react-icons/hi2"
 import { BiTargetLock } from "react-icons/bi"
-import WeatherLogo from "assets/weatherLogo.svg"
+import WeatherLogo from "assets/schrixxWeatherLogo.svg"
+import { BiLoaderAlt } from "react-icons/bi";
+import { SlLocationPin } from "react-icons/sl"
 
 
 /// <reference types="vite/client" />
@@ -14,54 +16,56 @@ import WeatherLogo from "assets/weatherLogo.svg"
 type Props = {
     term: string,
     option: [],
+    // setForecast: React.Dispatch<React.SetStateAction<forecastType | null>>,
     onInputChange: (e: ChangeEvent<HTMLInputElement>) => void,
-    onOptionSelect: (option: optionType) => void,
-    onSubmit: () => void
+    isLoading: boolean,
+    optionClickHandler: (option: optionType) => void
+    // setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    userGeoLocation: () => void,
+    showOptions: boolean
 }
 
 const Search = ({
     term,
     option,
-    onSubmit,
+    showOptions,
     onInputChange,
-    onOptionSelect,
+    optionClickHandler,
+    isLoading,
+    userGeoLocation,
 }: Props): JSX.Element => {
 
   return (
-    // <div className="mt-8 flex flex-row justify-around">
-    //   <NavLink to="https://schrixx.com" target="_blank" className="flex flex-row gap-1 items-center">
-    //     <img src={Logo} alt="logo" className="h-14 w-auto" />
-    //     <span className="text-3xl tracking-wider">Schrixx</span>
-    //   </NavLink>
-
-
-
-
-    // </div>
-    <>
-      <div className="flex flex-col items-center gap-6 justify-center h-[100dvh] max-w-xl mx-auto">
+    <div className="flex items-center justify-center mx-auto h-[100dvh] max-w-xl">
+      <div className="flex flex-col items-center gap-6 justify-center px-6 py-12 sm:backdrop-blur-2xl sm:shadow-2xl rounded-2xl border-2 border-surfaceText">
         <a href="https://schrixx.com" target="_blank" className="flex flex-col justify-center items-center gap-3">
           <img src={WeatherLogo} alt="logo" className="h-24 w-auto" />
-          <span className="text-5xl font-[700]">Schrixx Weather</span>
+          <p className="text-5xl font-[700] text-center tracking-wide">Schrixx Weather</p>
         </a>
-        <span className="">Find the current weather forecast of a location!</span>
-        <div className="relative w-fit flex flex-row items-center gap-4 rounded-full bg-surface transition-shadow duration-300 focus-within:shadow-md focus-within:shadow-black hover:shadow-md hover:shadow-black p-3">
-          <button onClick={onSubmit}><HiMagnifyingGlass className="h-6 w-full" /></button>
-          <input type="text" value={term} onChange={onInputChange} placeholder="Location" className="bg-surface outline-none text-lg" />
-          <ul className="absolute top-14 left-11 bg-surface ml-1 rounded-b-md">
+        <p className="text-center">Find the weather forecast of a given location!</p>
+        <div className="relative w-fit flex flex-row items-center gap-4 rounded-full bg-surfaceText transition-shadow duration-300 focus-within:shadow-sm focus-within:shadow-black hover:shadow-sm hover:shadow-black p-3">
+          <HiMagnifyingGlass className="h-6 w-full text-[#1D1C1F]" />
+          <input type="text" value={term} onChange={onInputChange} placeholder="Location" className="bg-surfaceText outline-none text-lg placeholder-surface caret-surface text-surface" />
+          <ul className={`${showOptions ? "absolute" : "hidden"} top-14 left-11 bg-surface ml-1 rounded-b-md`}>
             {option.map((option: optionType) => (
               <li key={uuidv4()} className="group">
-                <button className="w-full cursor-pointer hover:bg-surfaceOutline p-2 group-last:rounded-b-md" onClick={() => onOptionSelect(option)}>{option.name}, {option.country}</button>
+                <button className="w-full flex gap-2 items-center cursor-pointer hover:bg-surfaceOutline p-2 group-last:rounded-b-md" onClick={() => {optionClickHandler(option)}}>
+                  <SlLocationPin className="text-surfaceTextDark text-2xl"/>
+                  <div className="flex flex-col items-start justify-center w-full">
+                    <span className="text-base">{option.name}, {option.state}</span>
+                    <span className="text-surfaceTextDark text-sm">{option.country}</span>
+                  </div>
+                </button>
               </li>
             ))}
           </ul>
         </div>
-        <button className="flex flex-row gap-2 items-center hover:bg-primaryHover bg-primary transition-colors duration-300 p-3 rounded-full">
-          <BiTargetLock />
-          <span className="text-lg">Current Location</span>
+        <button onClick={userGeoLocation} className="flex flex-row gap-2 items-center hover:bg-surfaceOutline bg-surface transition-colors duration-300 p-3 rounded-full">
+          { isLoading ? <BiLoaderAlt color="#EAE6F2" className="animate-spin" /> : <BiTargetLock /> }
+          { isLoading ? null : <span className="text-lg">Current Location</span> }
         </button>
       </div>
-    </>
+    </div>
   )
 }
 

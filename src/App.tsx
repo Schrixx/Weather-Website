@@ -10,21 +10,32 @@ const App = (): JSX.Element => {
     option,
     term,
     forecast,
-    onSubmit,
     onInputChange,
-    onOptionSelect,
+    optionClickHandler,
+    isLoading,
+    showOptions,
+    userGeoLocation,
   } = useForecast()
 
   return (
     <>
       { forecast ? 
-      <Forecast forecastData={forecast} />
-      :       
-      <Search
-      term={term}
+      <Forecast
+      term={term} isLoading={isLoading}
+      option={option} forecastData={forecast}
       onInputChange={onInputChange}
-      onSubmit={onSubmit} option={option}
-      onOptionSelect={onOptionSelect}
+      showOptions={showOptions}
+      optionClickHandler={optionClickHandler}
+      userGeoLocation={userGeoLocation}
+      />
+      :
+      <Search
+      term={term} option={option}
+      onInputChange={onInputChange}
+      isLoading={isLoading}
+      showOptions={showOptions}
+      optionClickHandler={optionClickHandler}
+      userGeoLocation={userGeoLocation}
       />
       }
     </>

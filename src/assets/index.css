@@ -16,7 +16,9 @@ body {
   margin: 0;
   padding: 0;
   border: 0;
-  background-color: #131214;
+  background-image: url("./mainBackground.png");
+  background-repeat: no-repeat;
+  background-size: cover;
   font-family: 'Work Sans', sans-serif;
   color: #EAE6F2;
   font-weight: 400;
