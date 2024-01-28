@@ -14,6 +14,7 @@ export default {
         secondary: "#0f5c6e",
         surfaceOutline: "#2E2D31",
         surfaceText: "#DDDAE5",
+        surfaceTextDark: "#86848A",
         panel: "rgba(74, 76, 77, 0.7)",
       },
     },
