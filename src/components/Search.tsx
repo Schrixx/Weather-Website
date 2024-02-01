@@ -1,39 +1,51 @@
-import { ChangeEvent } from "react"
-
 import { v4 as uuidv4 } from "uuid"
 
-import { optionType } from "../types/index"
+import { propsType, optionType } from "../types/index"
 
 import { HiMagnifyingGlass } from "react-icons/hi2"
 import { BiTargetLock } from "react-icons/bi"
 import WeatherLogo from "assets/schrixxWeatherLogo.svg"
 import { BiLoaderAlt } from "react-icons/bi";
 import { SlLocationPin } from "react-icons/sl"
+import { useEffect, useRef } from "react"
 
 
 /// <reference types="vite/client" />
-
-type Props = {
-    term: string,
-    option: [],
-    // setForecast: React.Dispatch<React.SetStateAction<forecastType | null>>,
-    onInputChange: (e: ChangeEvent<HTMLInputElement>) => void,
-    isLoading: boolean,
-    optionClickHandler: (option: optionType) => void
-    // setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
-    userGeoLocation: () => void,
-    showOptions: boolean
-}
 
 const Search = ({
     term,
     option,
     showOptions,
+    setShowOptions,
     onInputChange,
     optionClickHandler,
     isLoading,
     userGeoLocation,
-}: Props): JSX.Element => {
+}: propsType): JSX.Element => {
+  const optionsRef = useRef<HTMLUListElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    let handler = (e: any) => {
+      if (
+        optionsRef.current
+        &&
+        inputRef.current
+        &&
+        !optionsRef.current.contains(e.target)
+        &&
+        !inputRef.current.contains(e.target)
+      ) {
+        setShowOptions(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handler)
+
+    return () => {
+      document.removeEventListener("mousedown", handler)
+    }
+  })
 
   return (
     <div className="flex items-center justify-center mx-auto h-[100dvh] max-w-xl">
@@ -45,8 +57,8 @@ const Search = ({
         <p className="text-center">Find the weather forecast of a given location!</p>
         <div className="relative w-fit flex flex-row items-center gap-4 rounded-full bg-surfaceText transition-shadow duration-300 focus-within:shadow-sm focus-within:shadow-black hover:shadow-sm hover:shadow-black p-3">
           <HiMagnifyingGlass className="h-6 w-full text-[#1D1C1F]" />
-          <input type="text" value={term} onChange={onInputChange} placeholder="Location" className="bg-surfaceText outline-none text-lg placeholder-surface caret-surface text-surface" />
-          <ul className={`${showOptions ? "absolute" : "hidden"} top-14 left-11 bg-surface ml-1 rounded-b-md`}>
+          <input ref={inputRef} type="text" value={term} onChange={onInputChange} placeholder="Location" className="bg-surfaceText outline-none text-lg placeholder-surface caret-surface text-surface" />
+          <ul ref={optionsRef} className={`${showOptions ? "absolute" : "hidden"} top-14 left-11 bg-surface ml-1 rounded-b-md`}>
             {option.map((option: optionType) => (
               <li key={uuidv4()} className="group">
                 <button className="w-full flex gap-2 items-center cursor-pointer hover:bg-surfaceOutline p-2 group-last:rounded-b-md" onClick={() => {optionClickHandler(option)}}>

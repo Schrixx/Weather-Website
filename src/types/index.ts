@@ -1,9 +1,22 @@
+import { ChangeEvent, Dispatch, SetStateAction } from "react"
+
 export type optionType = {
     name: string,
     lat: number,
     lon: number,
     country: string,
     state: string,
+}
+
+export type propsType = {
+    term: string,
+    option: [],
+    onInputChange: (e: ChangeEvent<HTMLInputElement>) => void,
+    isLoading: boolean,
+    optionClickHandler: (option: optionType) => void
+    userGeoLocation: () => void,
+    showOptions: boolean,
+    setShowOptions: Dispatch<SetStateAction<boolean>>
 }
 
 export type forecastType = {

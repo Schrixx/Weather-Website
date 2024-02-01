@@ -1,9 +1,11 @@
 import { ChangeEvent, useEffect, useState } from "react"
 
+import useDebounce from "./useDebounce"
 import { forecastType, optionType } from "../types/index"
 
 const useForecast = () => {
-  const [term, setTerm] = useState<string>("")
+  const [search, setSearch] = useState<string>("")
+  // const debouncedSearch = useDebounce(search)
   const [option, setOption] = useState<[]>([])
   const [city, setCity] = useState<optionType | null>(null)
   const [forecast, setForecast] = useState<forecastType | null>(null)
@@ -12,7 +14,7 @@ const useForecast = () => {
 
   useEffect(() => {
     if (city) {
-      setTerm(city.name)
+      setSearch(city.name)
       setOption([])
       submitOption()
     }
@@ -29,11 +31,13 @@ const useForecast = () => {
   }
 
   function onInputChange(e: ChangeEvent<HTMLInputElement>) {
+    if (showOptions === false) setShowOptions(true)
+
     const location = e.target.value.trim()
-    setTerm(location)
+    setSearch(useDebounce(location))
 
     if (e.target.value === "") return
-    findLocations(location)
+    findLocations(useDebounce(location))
   }
 
   const getForecast = (city: optionType) => {
@@ -55,7 +59,6 @@ const useForecast = () => {
 
   const userGeoLocation = () => {
     setIsLoading(true)
-    console.log(`Started userGeoLocation: ${isLoading}`)
     navigator.geolocation.getCurrentPosition( async ({ coords }) => {
       let response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${coords.latitude}&lon=${coords.longitude}&units=metric&appid=${import.meta.env.VITE_REACT_APP_API_KEY}`)
       let data = await response.json()
@@ -84,10 +87,11 @@ const useForecast = () => {
 
   return {
     option,
-    term,
+    search,
     forecast,
     setForecast,
     showOptions,
+    setShowOptions,
     onInputChange,
     optionClickHandler,
     userGeoLocation,

@@ -1,6 +1,4 @@
-import { ChangeEvent } from "react"
-
-import { forecastType } from "../types/index"
+import { propsType, forecastType } from "../types/index"
 import { optionType } from "../types/index"
 
 import { v4 as uuidv4 } from "uuid"
@@ -10,16 +8,10 @@ import { BiLoaderAlt, BiTargetLock } from "react-icons/bi"
 import { SlLocationPin } from "react-icons/sl"
 import SchrixxLogo from "assets/schrixxLogo.svg"
 import Sun from "assets/weatherIcons/sunny.png"
+import { useEffect, useRef } from "react"
  
-type Props = {
-  term: string,
-  forecastData: forecastType,
-  option: [],
-  onInputChange: (e: ChangeEvent<HTMLInputElement>) => void,
-  optionClickHandler: (option: optionType) => void
-  isLoading: boolean,
-  userGeoLocation: () => void,
-  showOptions: boolean
+interface forecastProps extends propsType {
+  forecastData: forecastType
 }
 
 const Forecast = ({
@@ -28,11 +20,37 @@ const Forecast = ({
   onInputChange,
   option,
   showOptions,
+  setShowOptions,
   optionClickHandler,
   isLoading,
   userGeoLocation
-}: Props): JSX.Element => {
+}: forecastProps): JSX.Element => {
   console.log(forecastData)
+  const optionsRef = useRef<HTMLUListElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    let handler = (e: any) => {
+      if (
+        optionsRef.current
+        &&
+        inputRef.current
+        &&
+        !optionsRef.current.contains(e.target)
+        &&
+        !inputRef.current.contains(e.target)
+      ) {
+        setShowOptions(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handler)
+
+    return () => {
+      document.removeEventListener("mousedown", handler)
+    }
+  })
+
   const { list: { 0: { main: currentTemps, weather: { main: currentWeather } } } } = forecastData
 
   return (
@@ -44,8 +62,8 @@ const Forecast = ({
         </a>
         <div className="relative w-fit flex flex-row items-center gap-4 rounded-full bg-surfaceText transition-shadow duration-300 focus-within:shadow-sm focus-within:shadow-black hover:shadow-sm hover:shadow-black p-3">
           <HiMagnifyingGlass className="h-6 w-full text-[#1D1C1F]" />
-          <input type="text" value={term} onChange={onInputChange} placeholder="Location" className="bg-surfaceText outline-none text-lg placeholder-surface caret-surface text-surface" />
-          <ul className={`${showOptions ? "absolute" : "hidden"} top-14 left-11 bg-surface ml-1 rounded-b-md`}>
+          <input ref={inputRef} type="text" value={term} onChange={onInputChange} placeholder="Location" className="bg-surfaceText outline-none text-lg placeholder-surface caret-surface text-surface" />
+          <ul ref={optionsRef} className={`${showOptions ? "absolute" : "hidden"} top-14 left-11 bg-surface ml-1 rounded-b-md`}>
             {option.map((option: optionType) => (
               <li key={uuidv4()} className="group">
                 <button className="w-full flex gap-2 items-center cursor-pointer hover:bg-surfaceOutline p-2 group-last:rounded-b-md" onClick={() => {optionClickHandler(option)}}>

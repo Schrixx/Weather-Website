@@ -14,6 +14,7 @@ const App = (): JSX.Element => {
     optionClickHandler,
     isLoading,
     showOptions,
+    setShowOptions,
     userGeoLocation,
   } = useForecast()
 
@@ -24,6 +25,7 @@ const App = (): JSX.Element => {
       term={term} isLoading={isLoading}
       option={option} forecastData={forecast}
       onInputChange={onInputChange}
+      setShowOptions={setShowOptions}
       showOptions={showOptions}
       optionClickHandler={optionClickHandler}
       userGeoLocation={userGeoLocation}
@@ -33,6 +35,7 @@ const App = (): JSX.Element => {
       term={term} option={option}
       onInputChange={onInputChange}
       isLoading={isLoading}
+      setShowOptions={setShowOptions}
       showOptions={showOptions}
       optionClickHandler={optionClickHandler}
       userGeoLocation={userGeoLocation}
