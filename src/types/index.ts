@@ -9,7 +9,7 @@ export type optionType = {
 }
 
 export type propsType = {
-    term: string,
+    search: string,
     option: [],
     onInputChange: (e: ChangeEvent<HTMLInputElement>) => void,
     isLoading: boolean,
