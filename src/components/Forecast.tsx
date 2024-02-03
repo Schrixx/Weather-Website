@@ -8,7 +8,8 @@ import { BiLoaderAlt, BiTargetLock } from "react-icons/bi"
 import { SlLocationPin } from "react-icons/sl"
 import SchrixxLogo from "assets/schrixxLogo.svg"
 import Sun from "assets/weatherIcons/sunny.png"
-import { useEffect, useRef } from "react"
+import { useRef } from "react"
+import { useClickOutside } from "src/hooks/useClickOutside"
  
 interface forecastProps extends propsType {
   forecastData: forecastType
@@ -16,7 +17,7 @@ interface forecastProps extends propsType {
 
 const Forecast = ({
   forecastData,
-  term,
+  search,
   onInputChange,
   option,
   showOptions,
@@ -25,31 +26,14 @@ const Forecast = ({
   isLoading,
   userGeoLocation
 }: forecastProps): JSX.Element => {
-  console.log(forecastData)
   const optionsRef = useRef<HTMLUListElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  useEffect(() => {
-    let handler = (e: any) => {
-      if (
-        optionsRef.current
-        &&
-        inputRef.current
-        &&
-        !optionsRef.current.contains(e.target)
-        &&
-        !inputRef.current.contains(e.target)
-      ) {
-        setShowOptions(false)
-      }
-    }
+  const handleCloseMenu = () => {
+    setShowOptions(false)
+  }
 
-    document.addEventListener("mousedown", handler)
-
-    return () => {
-      document.removeEventListener("mousedown", handler)
-    }
-  })
+  useClickOutside(optionsRef, inputRef, handleCloseMenu)
 
   const { list: { 0: { main: currentTemps, weather: { main: currentWeather } } } } = forecastData
 
@@ -62,7 +46,7 @@ const Forecast = ({
         </a>
         <div className="relative w-fit flex flex-row items-center gap-4 rounded-full bg-surfaceText transition-shadow duration-300 focus-within:shadow-sm focus-within:shadow-black hover:shadow-sm hover:shadow-black p-3">
           <HiMagnifyingGlass className="h-6 w-full text-[#1D1C1F]" />
-          <input ref={inputRef} type="text" value={term} onChange={onInputChange} placeholder="Location" className="bg-surfaceText outline-none text-lg placeholder-surface caret-surface text-surface" />
+          <input ref={inputRef} type="text" value={search} onChange={onInputChange} placeholder="Location" className="bg-surfaceText outline-none text-lg placeholder-surface caret-surface text-surface" />
           <ul ref={optionsRef} className={`${showOptions ? "absolute" : "hidden"} top-14 left-11 bg-surface ml-1 rounded-b-md`}>
             {option.map((option: optionType) => (
               <li key={uuidv4()} className="group">

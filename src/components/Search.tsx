@@ -7,13 +7,14 @@ import { BiTargetLock } from "react-icons/bi"
 import WeatherLogo from "assets/schrixxWeatherLogo.svg"
 import { BiLoaderAlt } from "react-icons/bi";
 import { SlLocationPin } from "react-icons/sl"
-import { useEffect, useRef } from "react"
+import { useRef } from "react"
+import { useClickOutside } from "src/hooks/useClickOutside"
 
 
 /// <reference types="vite/client" />
 
 const Search = ({
-    term,
+    search,
     option,
     showOptions,
     setShowOptions,
@@ -25,27 +26,11 @@ const Search = ({
   const optionsRef = useRef<HTMLUListElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  useEffect(() => {
-    let handler = (e: any) => {
-      if (
-        optionsRef.current
-        &&
-        inputRef.current
-        &&
-        !optionsRef.current.contains(e.target)
-        &&
-        !inputRef.current.contains(e.target)
-      ) {
-        setShowOptions(false)
-      }
-    }
+  const handleCloseMenu = () => {
+    setShowOptions(false)
+  }
 
-    document.addEventListener("mousedown", handler)
-
-    return () => {
-      document.removeEventListener("mousedown", handler)
-    }
-  })
+  useClickOutside(optionsRef, inputRef, handleCloseMenu)
 
   return (
     <div className="flex items-center justify-center mx-auto h-[100dvh] max-w-xl">
@@ -54,10 +39,10 @@ const Search = ({
           <img src={WeatherLogo} alt="logo" className="h-24 w-auto" />
           <p className="text-5xl font-[700] text-center tracking-wide">Schrixx Weather</p>
         </a>
-        <p className="text-center">Find the weather forecast of a given location!</p>
+        <p className="text-center">Find the weather forecast of a given city!</p>
         <div className="relative w-fit flex flex-row items-center gap-4 rounded-full bg-surfaceText transition-shadow duration-300 focus-within:shadow-sm focus-within:shadow-black hover:shadow-sm hover:shadow-black p-3">
           <HiMagnifyingGlass className="h-6 w-full text-[#1D1C1F]" />
-          <input ref={inputRef} type="text" value={term} onChange={onInputChange} placeholder="Location" className="bg-surfaceText outline-none text-lg placeholder-surface caret-surface text-surface" />
+          <input ref={inputRef} type="text" value={search} onChange={onInputChange} placeholder="Location" className="bg-surfaceText outline-none text-lg placeholder-surface caret-surface text-surface" />
           <ul ref={optionsRef} className={`${showOptions ? "absolute" : "hidden"} top-14 left-11 bg-surface ml-1 rounded-b-md`}>
             {option.map((option: optionType) => (
               <li key={uuidv4()} className="group">
