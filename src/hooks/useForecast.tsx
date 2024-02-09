@@ -28,7 +28,6 @@ const useForecast = () => {
     useEffect(() => {
       const timeout = setTimeout(() => {
         setDebouncedSearch(input)
-        console.log("set")
       }, delay)
 
       return () => {
@@ -61,7 +60,7 @@ const useForecast = () => {
   }
 
   const getForecast = (city: optionType) => {
-    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${city.lat}&lon=${city.lon}&units=metric&appid=${import.meta.env.VITE_REACT_APP_API_KEY}`)
+    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${city.lat}&lon=${city.lon}&units=imperial&appid=${import.meta.env.VITE_REACT_APP_API_KEY}`)
     .then(res => res.json())
     .then(data => {
       const forecastData = {
@@ -80,7 +79,7 @@ const useForecast = () => {
   const userGeoLocation = () => {
     setIsLoading(true)
     navigator.geolocation.getCurrentPosition( async ({ coords }) => {
-      let response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${coords.latitude}&lon=${coords.longitude}&units=metric&appid=${import.meta.env.VITE_REACT_APP_API_KEY}`)
+      let response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${coords.latitude}&lon=${coords.longitude}&units=imperial&appid=${import.meta.env.VITE_REACT_APP_API_KEY}`)
       let data = await response.json()
       const forecastData = {
         ...data.city,
