@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+::-webkit-scrollbar {
+  width: 10px;
+  height: 13px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 20px;
+  background-color: rgb(255 255 255 / 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #FAD6A7;
+}
+
 :root {
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -20,7 +35,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   font-family: 'Work Sans', sans-serif;
-  color: #EAE6F2;
+  color: #1D1C1F;
   font-weight: 400;
   font-size: 20px;
   overflow-x: hidden;
