@@ -9,7 +9,7 @@ export type optionType = {
 }
 
 export type propsType = {
-    term: string,
+    search: string,
     option: [],
     onInputChange: (e: ChangeEvent<HTMLInputElement>) => void,
     isLoading: boolean,
@@ -28,6 +28,7 @@ export type forecastType = {
     list: [{
         //daytime
         dt: number,
+        dt_txt: string,
         main: {
             feels_like: number,
             humidity: number,
@@ -36,11 +37,13 @@ export type forecastType = {
             temp_max: number,
             temp_min: number,
         },
-        weather: {
-            main: string,
-            icon: string,
-            description: string,
-        },
+        weather: [
+            {
+                main: string,
+                icon: string,
+                description: string,
+            }
+        ],
         wind: {
             speed: number,
             gust: number,

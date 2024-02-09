@@ -1,16 +1,16 @@
 import { ChangeEvent, useEffect, useState } from "react"
 
-import useDebounce from "./useDebounce"
 import { forecastType, optionType } from "../types/index"
 
 const useForecast = () => {
   const [search, setSearch] = useState<string>("")
-  // const debouncedSearch = useDebounce(search)
   const [option, setOption] = useState<[]>([])
   const [city, setCity] = useState<optionType | null>(null)
   const [forecast, setForecast] = useState<forecastType | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [showOptions, setShowOptions] = useState<boolean>(true)
+  const [debouncedSearch, setDebouncedSearch] = useState<string>("")
+  const debouncedValue = debouncer(search, 400)
 
   useEffect(() => {
     if (city) {
@@ -20,28 +20,47 @@ const useForecast = () => {
     }
   }, [city])
 
+  useEffect(() => {
+    findLocations(debouncedValue)
+  }, [debouncedValue])
+
+  function debouncer(input: string, delay = 500) {
+    useEffect(() => {
+      const timeout = setTimeout(() => {
+        setDebouncedSearch(input)
+      }, delay)
+
+      return () => {
+        clearTimeout(timeout)
+      }
+    }, [input, delay])
+
+    return debouncedSearch
+  }
+
   const findLocations = (location: string) => {
-    fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${location.trim()}&limit=5&appid=${import.meta.env.VITE_REACT_APP_API_KEY}`)
-    .then(res => res.json())
-    .then(data => {
-      console.log("Option:")
-      console.log(data)
-      setOption(data)
-    })
+    if (location) {
+      console.log(`Inside findLocations: ${location}`)
+      fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${location}&limit=5&appid=${import.meta.env.VITE_REACT_APP_API_KEY}`)
+      .then(res => res.json())
+      .then(data => {
+        console.log("Options:")
+        console.log(data)
+        setOption(data)
+      })
+    }
   }
 
   function onInputChange(e: ChangeEvent<HTMLInputElement>) {
     if (showOptions === false) setShowOptions(true)
-
+    
     const location = e.target.value.trim()
-    setSearch(useDebounce(location))
-
-    if (e.target.value === "") return
-    findLocations(useDebounce(location))
+    if (location === "") setShowOptions(false)
+    setSearch(location)
   }
 
   const getForecast = (city: optionType) => {
-    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${city.lat}&lon=${city.lon}&units=metric&appid=${import.meta.env.VITE_REACT_APP_API_KEY}`)
+    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${city.lat}&lon=${city.lon}&units=imperial&appid=${import.meta.env.VITE_REACT_APP_API_KEY}`)
     .then(res => res.json())
     .then(data => {
       const forecastData = {
@@ -60,7 +79,7 @@ const useForecast = () => {
   const userGeoLocation = () => {
     setIsLoading(true)
     navigator.geolocation.getCurrentPosition( async ({ coords }) => {
-      let response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${coords.latitude}&lon=${coords.longitude}&units=metric&appid=${import.meta.env.VITE_REACT_APP_API_KEY}`)
+      let response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${coords.latitude}&lon=${coords.longitude}&units=imperial&appid=${import.meta.env.VITE_REACT_APP_API_KEY}`)
       let data = await response.json()
       const forecastData = {
         ...data.city,
@@ -78,10 +97,9 @@ const useForecast = () => {
   const submitOption = () => {
     setShowOptions(false)
     if (!city) {
-      console.log("nothing in city returning")
+      console.error("No city available")
       return
     }
-    console.log("There IS something in city, getting forecast")
     getForecast(city)
   }
 

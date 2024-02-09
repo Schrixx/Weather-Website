@@ -8,7 +8,7 @@ const App = (): JSX.Element => {
 
   const {
     option,
-    term,
+    search,
     forecast,
     onInputChange,
     optionClickHandler,
@@ -22,7 +22,7 @@ const App = (): JSX.Element => {
     <>
       { forecast ? 
       <Forecast
-      term={term} isLoading={isLoading}
+      search={search} isLoading={isLoading}
       option={option} forecastData={forecast}
       onInputChange={onInputChange}
       setShowOptions={setShowOptions}
@@ -32,7 +32,7 @@ const App = (): JSX.Element => {
       />
       :
       <Search
-      term={term} option={option}
+      search={search} option={option}
       onInputChange={onInputChange}
       isLoading={isLoading}
       setShowOptions={setShowOptions}
