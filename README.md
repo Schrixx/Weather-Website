@@ -1,5 +1,5 @@
 ![Schrixx Logo](src/assets/readme/schrixxLogoSmall.png)
-# Welcome To My Portfolio Website
+# Welcome To My Weather Web App
 
 This is my Weather Web App made on my own. It's capable of displaying weather data on a given city; displaying the current high and low, humidity, sunrise and sunset, and finally wind speed. For the UI and visuals I took from other weather website designs.
 
