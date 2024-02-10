@@ -1,30 +1,20 @@
-# React + TypeScript + Vite
+![Schrixx Logo](src/assets/readme/schrixxLogoSmall.png)
+# Welcome To My Portfolio Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is my Weather Web App made on my own. It's capable of displaying weather data on a given city; displaying the current high and low, humidity, sunrise and sunset, and finally wind speed. For the UI and visuals I took from other weather website designs.
 
-Currently, two official plugins are available:
+### [Demo Video on YouTube](https://www.youtube.com/watch?v=1oms4JDP8ow)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### [Live Website](https://schrixx.com)
 
-## Expanding the ESLint configuration
+# Features
+▪ Engaged with an Application Programming Interface (API) to procure data pertaining to a designated urban locale.
+<br>
+▪ Developed and integrated a debouncing mechanism to mitigate excessive API invocations triggered by individual keystrokes within the input field, ensuring optimal performance and resource utilization.
+<br>
+▪ Designed and executed a dynamic, user-centric menu system that showcases city locations with seamless interactivity and responsiveness across various devices and screen sizes.
+<br>
+▪ Implemented a responsive design that adapts fluidly to various screen sizes and devices, ensuring optimal user experience across all platforms.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+# How To Download
+Go to this repository's "[Releases](https://github.com/Schrixx/Weather-Website/releases)" section to download the source code of the latest release.
