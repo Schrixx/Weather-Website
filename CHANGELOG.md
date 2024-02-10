@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/Schrixx/Weather-Website/compare/v1.0.0...v1.0.1) (2024-02-10)
+
+
+### Bug Fixes
+
+* invalid date on certain browsers, like Firefox ([9575d50](https://github.com/Schrixx/Weather-Website/commit/9575d50c7399e98f11021b8c00db245f8009f081))
+
 ## [1.0.0](https://github.com/Schrixx/Weather-Website/compare/v0.1.0...v1.0.0) (2024-02-09)
 
 
