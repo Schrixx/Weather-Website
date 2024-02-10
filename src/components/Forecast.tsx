@@ -72,7 +72,7 @@ const Forecast = ({
         <div className="mb-2 w-full flex flex-col items-center forecast:block forecast:w-fit">
           <p className="text-white text-4xl font-semibold">{name}, {country}</p>
           <p className="flex gap-2 text-white text-xl font-light">
-            {Intl.DateTimeFormat('en', { month: 'long' }).format(new Date(dt_txt.slice(5, 7)))}
+            {Intl.DateTimeFormat('en', { month: 'long' }).format(new Date(dt_txt))}
             <span>{dt_txt.slice(8, 10)},</span>
             <span>{dt_txt.slice(0, 4)}</span>
           </p>
