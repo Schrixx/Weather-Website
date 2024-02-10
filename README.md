@@ -10,9 +10,12 @@ This is a Weather Web App made on my own. It's capable of displaying weather dat
 # Features
 ▪ Engaged with an Application Programming Interface (API) to procure data pertaining to a designated urban locale.
 <br>
+<br>
 ▪ Developed and integrated a debouncing mechanism to mitigate excessive API invocations triggered by individual keystrokes within the input field, ensuring optimal performance and resource utilization.
 <br>
+<br>
 ▪ Designed and executed a dynamic, user-centric menu system that showcases city locations with seamless interactivity and responsiveness across various devices and screen sizes.
+<br>
 <br>
 ▪ Implemented a responsive design that adapts fluidly to various screen sizes and devices, ensuring optimal user experience across all platforms.
 
