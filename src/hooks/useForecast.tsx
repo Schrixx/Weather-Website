@@ -40,12 +40,9 @@ const useForecast = () => {
 
   const findLocations = (location: string) => {
     if (location) {
-      console.log(`Inside findLocations: ${location}`)
       fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${location}&limit=5&appid=${import.meta.env.VITE_REACT_APP_API_KEY}`)
       .then(res => res.json())
       .then(data => {
-        console.log("Options:")
-        console.log(data)
         setOption(data)
       })
     }
